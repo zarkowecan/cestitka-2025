@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Srećni Praznici | WE CAN Agency</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- GLOBALNI STILOVI --- */
+        :root {
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --box-bg: rgba(255, 255, 255, 0.1);
+            --accent-pink: #ff69b4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- HERO SEKCIJA --- */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* --- ZAMENI SLIKU OVDE --- */
+            background-image: url('Poklon Landing.jpg'); 
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+            filter: brightness(0.3);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo-img {
+            width: 40%;
+            max-width: 180px;
+            min-width: 120px;
+            margin-bottom: 2.5rem;
+            height: auto;
+            filter: brightness(0) invert(1); 
+        }
+
+        .email-box {
+            background: var(--box-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: left;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+
+        .email-body {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            font-weight: 300;
+            opacity: 0.95;
+        }
+
+        .signature {
+            margin-top: 2rem;
+            text-align: right;
+            font-weight: 600;
+            display: block;
+            letter-spacing: 1px;
+        }
+
+        .scroll-down-container {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            text-align: center;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+        .scroll-down-container:hover { opacity: 1; }
+
+        .scroll-text {
+            font-size: 0.9rem;
+            font-weight: 400;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .arrow-down {
+            width: 18px; height: 18px;
+            border-bottom: 2px solid white;
+            border-right: 2px solid white;
+            transform: rotate(45deg);
+            margin: 0 auto;
+            animation: bounce 2s infinite;
+        }
+
+        /* --- POKLON SEKCIJA --- */
+        #gift-section {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            background-color: var(--bg-color);
+            overflow: hidden;
+        }
+
+        #webgl-canvas {
+            position: absolute;
+            top: 0; left: 0;
+            outline: none;
+            z-index: 1;
+        }
+
+        /* --- IZMENA: POMERENO NA GORE --- */
+        .gift-cta-text {
+            position: absolute;
+            top: 10%; /* Bilo je 18%, sada je 10% da ne smeta poklonu */
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            z-index: 2;
+            text-align: center;
+            pointer-events: none;
+            letter-spacing: 2px;
+        }
+
+        .final-message {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            width: 90%;
+        }
+
+        .final-message h2 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #ffffff, var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .final-message p {
+             font-size: 1.2rem;
+             opacity: 0.8;
+             letter-spacing: 4px;
+             text-transform: uppercase;
+        }
+
+        .custom-cursor-area {
+             cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' style='fill:white;font-size:24px;'><text y='50%'>🎁</text></svg>") 16 0, auto;
+        }
+
+        footer {
+            background: #050505;
+            padding: 3rem 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.3);
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: rotate(45deg) translate(0, 0);}
+            40% {transform: rotate(45deg) translate(-8px, -8px);}
+            60% {transform: rotate(45deg) translate(-4px, -4px);}
+        }
+
+        @media (max-width: 768px) {
+            .hero { padding: 6rem 1.5rem 2rem; justify-content: flex-start; }
+            .logo-img { margin-bottom: 3rem; }
+            .email-box { padding: 2rem; }
+            .email-body { font-size: 0.95rem; }
+            /* Na mobilnom jos malo manji font da stane lepo */
+            .gift-cta-text { font-size: 2.2rem; top: 12%; }
+            .final-message h2 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <div class="hero-bg"></div>
+        
+        <div class="hero-content">
+            <img src="WE CAN - white.png" alt="WE CAN Logo" class="logo-img">
+            
+            <div class="email-box">
+                <div class="email-body">
+                    <p>Poštovani,</p>
+                    <br>
+                    <p>
+                        Dok zatvaramo tabove stare godine i analiziramo rezultate, želimo da zastanemo i kažemo – Hvala.
+                        Hvala vam na poverenju, na izazovima koji su nas gurali napred i na vizijama koje smo zajedno pretvarali u stvarnost.
+                        Neka vam nova godina donese ROI kakav sanjate, konverzije koje probijaju plafone i kreativnost koja ne poznaje granice.
+                        Mi smo spremni za nove pobede. A vi?
+                    </p>
+                    <span class="signature">Vaš WE CAN tim</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-down-container" onclick="document.getElementById('gift-section').scrollIntoView();">
+            <p class="scroll-text">Scroll down</p>
+            <div class="arrow-down"></div>
+        </div>
+    </section>
+
+    <section id="gift-section" class="custom-cursor-area">
+        <h2 class="gift-cta-text" id="ctaText">OTVORI POKLON</h2>
+        <canvas id="webgl-canvas"></canvas>
+        <div class="final-message" id="finalMessage">
+            <h2>Srećni novogodisnji i božićni praznici!</h2>
+            <p>WE CAN Marketing Agency</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 WE CAN Marketing Agency. All rights reserved.</p>
+    </footer>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <script>
+        const canvas = document.querySelector('#webgl-canvas');
+        const giftSection = document.querySelector('#gift-section');
+        const ctaText = document.getElementById('ctaText');
+        const finalMessage = document.getElementById('finalMessage');
+        let width = giftSection.clientWidth;
+        let height = giftSection.clientHeight;
+
+        // --- SCENA I KAMERA ---
+        const scene = new THREE.Scene();
+        // Malo sam udaljio kameru (sa 12 na 14) da poklon ne bude preblizu tekst-u
+        const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+        camera.position.set(0, 4.5, 14); 
+        camera.lookAt(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({ 
+            canvas, 
+            antialias: true, 
+            alpha: true,
+            powerPreference: "high-performance"
+        });
+        renderer.setSize(width, height);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.outputEncoding = THREE.sRGBEncoding;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.2;
+
+        // --- OSVETLJENJE ---
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        const mainLight = new THREE.DirectionalLight(0xffffff, 1.5);
+        mainLight.position.set(8, 12, 8);
+        mainLight.castShadow = true;
+        mainLight.shadow.mapSize.width = 2048;
+        mainLight.shadow.mapSize.height = 2048;
+        scene.add(mainLight);
+
+        const fillLight = new THREE.DirectionalLight(0xbca4e6, 0.8);
+        fillLight.position.set(-8, 6, 5);
+        scene.add(fillLight);
+
+        const rimLight = new THREE.SpotLight(0xff1493, 2.5, 30, Math.PI/4, 0.5);
+        rimLight.position.set(0, 5, -10);
+        rimLight.lookAt(0,0,0);
+        scene.add(rimLight);
+
+
+        // --- MATERIJALI ---
+        const boxMat = new THREE.MeshPhysicalMaterial({ 
+            color: 0x9575cd, 
+            roughness: 0.3,  
+            metalness: 0.7,  
+            reflectivity: 0.8,
+            clearcoat: 0.5,  
+            clearcoatRoughness: 0.2
+        });
+
+        const ribbonMat = new THREE.MeshPhysicalMaterial({ 
+            color: 0xff4081, 
+            roughness: 0.15,
+            metalness: 0.9,
+            transmission: 0,
+            opacity: 1,
+            emissive: 0x59002b,
+            emissiveIntensity: 0.4,
+            reflectivity: 1,
+            clearcoat: 1,
+            ior: 1.5
+        });
+
+        // --- MODEL POKLONA ---
+        const giftGroup = new THREE.Group();
+        scene.add(giftGroup);
+
+        const boxGeo = new THREE.BoxGeometry(4, 3.5, 4);
+        const boxBase = new THREE.Mesh(boxGeo, boxMat);
+        boxBase.position.y = -0.25; boxBase.castShadow = true; boxBase.receiveShadow = true;
+        giftGroup.add(boxBase);
+
+        const lidGroup = new THREE.Group();
+        lidGroup.position.y = 1.5;
+        giftGroup.add(lidGroup);
+        const lidGeo = new THREE.BoxGeometry(4.3, 0.8, 4.3);
+        const boxLid = new THREE.Mesh(lidGeo, boxMat);
+        boxLid.castShadow = true;
+        lidGroup.add(boxLid);
+
+        const rV1 = new THREE.Mesh(new THREE.BoxGeometry(0.8, 3.6, 4.1), ribbonMat); rV1.position.y = -0.25; giftGroup.add(rV1);
+        const rV2 = new THREE.Mesh(new THREE.BoxGeometry(4.1, 3.6, 0.8), ribbonMat); rV2.position.y = -0.25; giftGroup.add(rV2);
+        const rL1 = new THREE.Mesh(new THREE.BoxGeometry(0.85, 0.9, 4.4), ribbonMat); lidGroup.add(rL1);
+        const rL2 = new THREE.Mesh(new THREE.BoxGeometry(4.4, 0.9, 0.85), ribbonMat); lidGroup.add(rL2);
+
+        const bowGroup = new THREE.Group();
+        bowGroup.position.y = 0.45;
+        lidGroup.add(bowGroup);
+
+        const bowKnot = new THREE.Mesh(new THREE.SphereGeometry(0.65, 32, 32), ribbonMat);
+        bowKnot.scale.set(1, 0.7, 1);
+        bowGroup.add(bowKnot);
+
+        const createLoop = (angle, scaleX, scaleY, posY, rotX) => {
+            const loop = new THREE.Mesh(new THREE.TorusGeometry(1.3, 0.4, 24, 64, Math.PI * 1.1), ribbonMat);
+            loop.position.set(Math.sin(angle)*1.1, posY, Math.cos(angle)*1.1);
+            loop.rotation.set(rotX, angle, 0);
+            loop.scale.set(scaleX, scaleY, 1);
+            loop.castShadow = true;
+            return loop;
+        }
+        bowGroup.add(createLoop(Math.PI/4, 1, 1, 0.5, Math.PI/3));
+        bowGroup.add(createLoop(-Math.PI/4, 1, 1, 0.5, Math.PI/3));
+        bowGroup.add(createLoop(Math.PI*0.75, 1, 1, 0.5, Math.PI/3));
+        bowGroup.add(createLoop(-Math.PI*0.75, 1, 1, 0.5, Math.PI/3));
+        bowGroup.add(createLoop(0, 0.7, 0.7, 0.8, Math.PI/2.5));
+        bowGroup.add(createLoop(Math.PI, 0.7, 0.7, 0.8, Math.PI/2.5));
+
+
+        // --- EKSPLOZIJA ---
+        const particlesCount = 600;
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesPositions = new Float32Array(particlesCount * 3);
+        const particlesColors = new Float32Array(particlesCount * 3);
+        const particlesVelocities = [];
+
+        const color1 = new THREE.Color(0xffffff);
+        const color2 = new THREE.Color(0xff69b4);
+
+        for(let i = 0; i < particlesCount; i++) {
+            const i3 = i * 3;
+            particlesPositions[i3] = (Math.random() - 0.5) * 1;
+            particlesPositions[i3+1] = (Math.random() - 0.5) * 1 + 1.5;
+            particlesPositions[i3+2] = (Math.random() - 0.5) * 1;
+
+            particlesVelocities.push({
+                x: (Math.random() - 0.5) * 10,
+                y: (Math.random() * 10) + 2,
+                z: (Math.random() - 0.5) * 10
+            });
+
+            const mixedColor = color1.clone().lerp(color2, Math.random());
+            particlesColors[i3] = mixedColor.r;
+            particlesColors[i3+1] = mixedColor.g;
+            particlesColors[i3+2] = mixedColor.b;
+        }
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(particlesPositions, 3));
+        particlesGeometry.setAttribute('color', new THREE.BufferAttribute(particlesColors, 3));
+
+        const canvasCircle = document.createElement('canvas');
+        canvasCircle.width = 32; canvasCircle.height = 32;
+        const ctx = canvasCircle.getContext('2d');
+        const gradient = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+        gradient.addColorStop(0, 'rgba(255,255,255,1)');
+        gradient.addColorStop(0.4, 'rgba(255,255,255,0.8)');
+        gradient.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = gradient; ctx.fillRect(0,0,32,32);
+        const particleTexture = new THREE.CanvasTexture(canvasCircle);
+
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.5,
+            map: particleTexture,
+            transparent: true,
+            opacity: 0,
+            vertexColors: true,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+
+        const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particles);
+        particles.visible = false;
+
+        // --- ANIMACIJA ---
+        let isOpened = false;
+        let isExploding = false;
+        const clock = new THREE.Clock();
+
+        const tick = () => {
+            const elapsedTime = clock.getElapsedTime();
+
+            if (!isOpened) {
+                giftGroup.position.y = Math.sin(elapsedTime * 1.2) * 0.25;
+                giftGroup.rotation.y = Math.sin(elapsedTime * 0.4) * 0.08;
+                giftGroup.rotation.z = Math.sin(elapsedTime * 0.8) * 0.02;
+            }
+
+            if (isExploding) {
+                 const positions = particlesGeometry.attributes.position.array;
+                 for(let i = 0; i < particlesCount; i++) {
+                     const i3 = i * 3;
+                     positions[i3]   += particlesVelocities[i].x * 0.015;
+                     positions[i3+1] += particlesVelocities[i].y * 0.015;
+                     positions[i3+2] += particlesVelocities[i].z * 0.015;
+                     particlesVelocities[i].y -= 0.05; 
+                 }
+                 particlesGeometry.attributes.position.needsUpdate = true;
+                 giftGroup.rotation.y += 0.05; 
+            }
+
+            renderer.render(scene, camera);
+            window.requestAnimationFrame(tick);
+        };
+        tick();
+
+        // --- KLIK NA POKLON ---
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        const onMouseClick = (event) => {
+            if (isOpened) return;
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = ((event.clientX - rect.left) / width) * 2 - 1;
+            mouse.y = -((event.clientY - rect.top) / height) * 2 + 1;
+            raycaster.setFromCamera(mouse, camera);
+            
+            if (raycaster.intersectObject(giftGroup, true).length > 0) {
+                openGift();
+            }
+        };
+
+        window.addEventListener('click', onMouseClick);
+        window.addEventListener('touchstart', (e) => onMouseClick(e.touches[0]), {passive: false});
+
+        function openGift() {
+            isOpened = true;
+            document.body.style.cursor = 'default';
+            particles.visible = true;
+
+            const tl = gsap.timeline();
+
+            tl.to(ctaText, { duration: 0.5, opacity: 0, y: -30, ease: "power3.in" });
+
+            tl.to(lidGroup.position, { duration: 0.8, y: 12, x: (Math.random()-0.5)*4, z: (Math.random()-0.5)*4, ease: "power4.out" }, "-=0.2");
+            tl.to(lidGroup.rotation, { duration: 1, x: Math.random()*Math.PI*2, y: Math.random()*Math.PI*2, ease: "power3.out" }, "<");
+
+            tl.add(() => { isExploding = true; }, "<+=0.05");
+            tl.to(particlesMaterial, { duration: 0.2, opacity: 1 }, "<");
+            
+            tl.to(giftGroup.scale, { duration: 0.5, x:0.01, y:0.01, z:0.01, ease: "back.in(3)" }, "-=0.6");
+            tl.to(giftGroup.position, { duration: 0.5, y: -2, ease: "power2.in" }, "<");
+
+            tl.to(particlesMaterial, { duration: 1.2, opacity: 0, size: 0, ease: "power2.out" }, "<+=0.3");
+
+            tl.to(finalMessage, {
+                duration: 1.2, opacity: 1, scale: 1, y: 0,
+                startAt: { scale: 0.9, y: 40 }, ease: "elastic.out(1, 0.75)"
+            }, "-=0.5");
+        }
+
+        window.addEventListener('resize', () => {
+            width = giftSection.clientWidth; height = giftSection.clientHeight;
+            camera.aspect = width / height; camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        });
+    </script>
+</body>
+</html>
