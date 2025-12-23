@@ -101,6 +101,7 @@
             letter-spacing: 1px;
         }
 
+        /* Scroll indikator (Default za Desktop) */
         .scroll-down-container {
             position: absolute;
             bottom: 30px;
@@ -147,10 +148,9 @@
             z-index: 1;
         }
 
-        /* --- IZMENA: POMERENO NA GORE --- */
         .gift-cta-text {
             position: absolute;
-            top: 10%; /* Bilo je 18%, sada je 10% da ne smeta poklonu */
+            top: 10%;
             left: 50%;
             transform: translateX(-50%);
             font-size: 3.5rem;
@@ -209,12 +209,27 @@
             60% {transform: rotate(45deg) translate(-4px, -4px);}
         }
 
+        /* --- POPRAVKA ZA MOBILNE UREĐAJE --- */
         @media (max-width: 768px) {
-            .hero { padding: 6rem 1.5rem 2rem; justify-content: flex-start; }
+            .hero { 
+                padding: 6rem 1.5rem 3rem; 
+                justify-content: flex-start; /* Da krene od vrha */
+                height: auto; /* Da visina nije fiksna */
+            }
             .logo-img { margin-bottom: 3rem; }
             .email-box { padding: 2rem; }
             .email-body { font-size: 0.95rem; }
-            /* Na mobilnom jos malo manji font da stane lepo */
+            
+            /* POPRAVKA SCROLL STRELICE: Sada ide ISPOD teksta, a ne preko njega */
+            .scroll-down-container {
+                position: relative; /* Više nije absolute */
+                bottom: auto;
+                left: auto;
+                transform: none;
+                margin-top: 3rem; /* Razmak između box-a i strelice */
+                margin-bottom: 2rem;
+            }
+
             .gift-cta-text { font-size: 2.2rem; top: 12%; }
             .final-message h2 { font-size: 2rem; }
         }
@@ -276,7 +291,6 @@
 
         // --- SCENA I KAMERA ---
         const scene = new THREE.Scene();
-        // Malo sam udaljio kameru (sa 12 na 14) da poklon ne bude preblizu tekst-u
         const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
         camera.position.set(0, 4.5, 14); 
         camera.lookAt(0, 0, 0);
