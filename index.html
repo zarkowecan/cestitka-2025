@@ -93,6 +93,12 @@
             opacity: 0.95;
         }
 
+        /* Klasa za highlight imena klijenta */
+        .client-name-highlight {
+            font-weight: 600;
+            color: #ffffff; 
+        }
+
         .signature {
             margin-top: 2rem;
             text-align: right;
@@ -101,7 +107,6 @@
             letter-spacing: 1px;
         }
 
-        /* Scroll indikator (Default za Desktop) */
         .scroll-down-container {
             position: absolute;
             bottom: 30px;
@@ -209,25 +214,17 @@
             60% {transform: rotate(45deg) translate(-4px, -4px);}
         }
 
-        /* --- POPRAVKA ZA MOBILNE UREĐAJE --- */
+        /* --- MEDIA QUERIES --- */
         @media (max-width: 768px) {
-            .hero { 
-                padding: 6rem 1.5rem 3rem; 
-                justify-content: flex-start; /* Da krene od vrha */
-                height: auto; /* Da visina nije fiksna */
-            }
+            .hero { padding: 6rem 1.5rem 3rem; justify-content: flex-start; height: auto; }
             .logo-img { margin-bottom: 3rem; }
             .email-box { padding: 2rem; }
             .email-body { font-size: 0.95rem; }
             
-            /* POPRAVKA SCROLL STRELICE: Sada ide ISPOD teksta, a ne preko njega */
             .scroll-down-container {
-                position: relative; /* Više nije absolute */
-                bottom: auto;
-                left: auto;
-                transform: none;
-                margin-top: 3rem; /* Razmak između box-a i strelice */
-                margin-bottom: 2rem;
+                position: relative;
+                bottom: auto; left: auto; transform: none;
+                margin-top: 3rem; margin-bottom: 2rem;
             }
 
             .gift-cta-text { font-size: 2.2rem; top: 12%; }
@@ -245,7 +242,7 @@
             
             <div class="email-box">
                 <div class="email-body">
-                    <p>Poštovani,</p>
+                    <p id="greeting">Poštovani,</p>
                     <br>
                     <p>
                         Dok zatvaramo tabove stare godine i analiziramo rezultate, želimo da zastanemo i kažemo – Hvala.
@@ -282,6 +279,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
     <script>
+        // --- NOVI KOD ZA PERSONALIZACIJU ---
+        // Čita URL parametre
+        const urlParams = new URLSearchParams(window.location.search);
+        const klijent = urlParams.get('klijent');
+
+        if (klijent) {
+            // Ako postoji parametar "klijent", menja tekst
+            // textContent je siguran način da se izbegnu greške
+            const greetingElement = document.getElementById('greeting');
+            greetingElement.innerHTML = `Poštovani <span class="client-name-highlight">${klijent}</span>,`;
+        }
+
+        // ------------------------------------------------------------------
+
         const canvas = document.querySelector('#webgl-canvas');
         const giftSection = document.querySelector('#gift-section');
         const ctaText = document.getElementById('ctaText');
@@ -296,10 +307,7 @@
         camera.lookAt(0, 0, 0);
 
         const renderer = new THREE.WebGLRenderer({ 
-            canvas, 
-            antialias: true, 
-            alpha: true,
-            powerPreference: "high-performance"
+            canvas, antialias: true, alpha: true, powerPreference: "high-performance"
         });
         renderer.setSize(width, height);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -316,8 +324,7 @@
         const mainLight = new THREE.DirectionalLight(0xffffff, 1.5);
         mainLight.position.set(8, 12, 8);
         mainLight.castShadow = true;
-        mainLight.shadow.mapSize.width = 2048;
-        mainLight.shadow.mapSize.height = 2048;
+        mainLight.shadow.mapSize.width = 2048; mainLight.shadow.mapSize.height = 2048;
         scene.add(mainLight);
 
         const fillLight = new THREE.DirectionalLight(0xbca4e6, 0.8);
@@ -329,31 +336,18 @@
         rimLight.lookAt(0,0,0);
         scene.add(rimLight);
 
-
         // --- MATERIJALI ---
         const boxMat = new THREE.MeshPhysicalMaterial({ 
-            color: 0x9575cd, 
-            roughness: 0.3,  
-            metalness: 0.7,  
-            reflectivity: 0.8,
-            clearcoat: 0.5,  
-            clearcoatRoughness: 0.2
+            color: 0x9575cd, roughness: 0.3, metalness: 0.7, reflectivity: 0.8,
+            clearcoat: 0.5, clearcoatRoughness: 0.2
         });
-
         const ribbonMat = new THREE.MeshPhysicalMaterial({ 
-            color: 0xff4081, 
-            roughness: 0.15,
-            metalness: 0.9,
-            transmission: 0,
-            opacity: 1,
-            emissive: 0x59002b,
-            emissiveIntensity: 0.4,
-            reflectivity: 1,
-            clearcoat: 1,
-            ior: 1.5
+            color: 0xff4081, roughness: 0.15, metalness: 0.9,
+            transmission: 0, opacity: 1, emissive: 0x59002b, emissiveIntensity: 0.4,
+            reflectivity: 1, clearcoat: 1, ior: 1.5
         });
 
-        // --- MODEL POKLONA ---
+        // --- MODEL ---
         const giftGroup = new THREE.Group();
         scene.add(giftGroup);
 
@@ -398,7 +392,6 @@
         bowGroup.add(createLoop(0, 0.7, 0.7, 0.8, Math.PI/2.5));
         bowGroup.add(createLoop(Math.PI, 0.7, 0.7, 0.8, Math.PI/2.5));
 
-
         // --- EKSPLOZIJA ---
         const particlesCount = 600;
         const particlesGeometry = new THREE.BufferGeometry();
@@ -414,17 +407,9 @@
             particlesPositions[i3] = (Math.random() - 0.5) * 1;
             particlesPositions[i3+1] = (Math.random() - 0.5) * 1 + 1.5;
             particlesPositions[i3+2] = (Math.random() - 0.5) * 1;
-
-            particlesVelocities.push({
-                x: (Math.random() - 0.5) * 10,
-                y: (Math.random() * 10) + 2,
-                z: (Math.random() - 0.5) * 10
-            });
-
+            particlesVelocities.push({ x: (Math.random() - 0.5)*10, y: (Math.random()*10)+2, z: (Math.random() - 0.5)*10 });
             const mixedColor = color1.clone().lerp(color2, Math.random());
-            particlesColors[i3] = mixedColor.r;
-            particlesColors[i3+1] = mixedColor.g;
-            particlesColors[i3+2] = mixedColor.b;
+            particlesColors[i3] = mixedColor.r; particlesColors[i3+1] = mixedColor.g; particlesColors[i3+2] = mixedColor.b;
         }
         particlesGeometry.setAttribute('position', new THREE.BufferAttribute(particlesPositions, 3));
         particlesGeometry.setAttribute('color', new THREE.BufferAttribute(particlesColors, 3));
@@ -433,45 +418,34 @@
         canvasCircle.width = 32; canvasCircle.height = 32;
         const ctx = canvasCircle.getContext('2d');
         const gradient = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
-        gradient.addColorStop(0, 'rgba(255,255,255,1)');
-        gradient.addColorStop(0.4, 'rgba(255,255,255,0.8)');
-        gradient.addColorStop(1, 'rgba(0,0,0,0)');
+        gradient.addColorStop(0, 'rgba(255,255,255,1)'); gradient.addColorStop(0.4, 'rgba(255,255,255,0.8)'); gradient.addColorStop(1, 'rgba(0,0,0,0)');
         ctx.fillStyle = gradient; ctx.fillRect(0,0,32,32);
         const particleTexture = new THREE.CanvasTexture(canvasCircle);
 
         const particlesMaterial = new THREE.PointsMaterial({
-            size: 0.5,
-            map: particleTexture,
-            transparent: true,
-            opacity: 0,
-            vertexColors: true,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false
+            size: 0.5, map: particleTexture, transparent: true, opacity: 0,
+            vertexColors: true, blending: THREE.AdditiveBlending, depthWrite: false
         });
-
         const particles = new THREE.Points(particlesGeometry, particlesMaterial);
         scene.add(particles);
         particles.visible = false;
 
-        // --- ANIMACIJA ---
-        let isOpened = false;
-        let isExploding = false;
+        // --- ANIMACIJA LOOP ---
+        let isOpened = false; let isExploding = false;
         const clock = new THREE.Clock();
 
         const tick = () => {
             const elapsedTime = clock.getElapsedTime();
-
             if (!isOpened) {
                 giftGroup.position.y = Math.sin(elapsedTime * 1.2) * 0.25;
                 giftGroup.rotation.y = Math.sin(elapsedTime * 0.4) * 0.08;
                 giftGroup.rotation.z = Math.sin(elapsedTime * 0.8) * 0.02;
             }
-
             if (isExploding) {
                  const positions = particlesGeometry.attributes.position.array;
                  for(let i = 0; i < particlesCount; i++) {
                      const i3 = i * 3;
-                     positions[i3]   += particlesVelocities[i].x * 0.015;
+                     positions[i3] += particlesVelocities[i].x * 0.015;
                      positions[i3+1] += particlesVelocities[i].y * 0.015;
                      positions[i3+2] += particlesVelocities[i].z * 0.015;
                      particlesVelocities[i].y -= 0.05; 
@@ -479,57 +453,41 @@
                  particlesGeometry.attributes.position.needsUpdate = true;
                  giftGroup.rotation.y += 0.05; 
             }
-
             renderer.render(scene, camera);
             window.requestAnimationFrame(tick);
         };
         tick();
 
-        // --- KLIK NA POKLON ---
+        // --- KLIK ---
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2();
-
         const onMouseClick = (event) => {
             if (isOpened) return;
             const rect = canvas.getBoundingClientRect();
             mouse.x = ((event.clientX - rect.left) / width) * 2 - 1;
             mouse.y = -((event.clientY - rect.top) / height) * 2 + 1;
             raycaster.setFromCamera(mouse, camera);
-            
-            if (raycaster.intersectObject(giftGroup, true).length > 0) {
-                openGift();
-            }
+            if (raycaster.intersectObject(giftGroup, true).length > 0) openGift();
         };
-
         window.addEventListener('click', onMouseClick);
         window.addEventListener('touchstart', (e) => onMouseClick(e.touches[0]), {passive: false});
 
         function openGift() {
-            isOpened = true;
-            document.body.style.cursor = 'default';
-            particles.visible = true;
-
+            isOpened = true; document.body.style.cursor = 'default'; particles.visible = true;
             const tl = gsap.timeline();
-
             tl.to(ctaText, { duration: 0.5, opacity: 0, y: -30, ease: "power3.in" });
-
             tl.to(lidGroup.position, { duration: 0.8, y: 12, x: (Math.random()-0.5)*4, z: (Math.random()-0.5)*4, ease: "power4.out" }, "-=0.2");
             tl.to(lidGroup.rotation, { duration: 1, x: Math.random()*Math.PI*2, y: Math.random()*Math.PI*2, ease: "power3.out" }, "<");
-
             tl.add(() => { isExploding = true; }, "<+=0.05");
             tl.to(particlesMaterial, { duration: 0.2, opacity: 1 }, "<");
-            
             tl.to(giftGroup.scale, { duration: 0.5, x:0.01, y:0.01, z:0.01, ease: "back.in(3)" }, "-=0.6");
             tl.to(giftGroup.position, { duration: 0.5, y: -2, ease: "power2.in" }, "<");
-
             tl.to(particlesMaterial, { duration: 1.2, opacity: 0, size: 0, ease: "power2.out" }, "<+=0.3");
-
             tl.to(finalMessage, {
                 duration: 1.2, opacity: 1, scale: 1, y: 0,
                 startAt: { scale: 0.9, y: 40 }, ease: "elastic.out(1, 0.75)"
             }, "-=0.5");
         }
-
         window.addEventListener('resize', () => {
             width = giftSection.clientWidth; height = giftSection.clientHeight;
             camera.aspect = width / height; camera.updateProjectionMatrix();
